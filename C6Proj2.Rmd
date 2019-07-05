@@ -1,5 +1,5 @@
 ---
-title: "Statistical Inference Course Project Prev"
+title: "Statistical Inference Course Project"
 author: "Justin Pizzino"
 date: "July 5, 2019"
 output: 
@@ -15,8 +15,8 @@ options(tinytex.verbose = TRUE)
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-#### Load the required libraries
-```{r libraries, echo=TRUE, warning=FALSE, message=FALSE}
+
+```{r libraries, echo=FALSE, warning=FALSE, message=FALSE}
   library(R.utils)
   library(data.table)
   library(dplyr)
@@ -24,12 +24,22 @@ knitr::opts_chunk$set(echo = TRUE)
   library(ggplot2)
 ```
 
-#### Create the simultion
+#### Create the simultion & plot the results
 ```{r simulation }
-  rate=0.2
-  n=40
-  intervals=1000
+  rate<-0.2
+  n<-40
+  intervals<-1000
   data = NULL
   for (i in 1 : intervals) data = c(data, mean(rexp(n,rate)))
-  hist(data)
+```
+## Sample mean is show here in read, which is very close to the therdoical mean of 1/lamda or 1/.2 = 5.
+```{r plot, echo=FALSE}
+data<-data.table(data)
+g<-ggplot(data, aes(x=data)) 
+g<-g + geom_histogram(color="black",fill="white", bins=30)
+g<-g + geom_vline(aes(xintercept=mean(data)),
+                  color="red",linetype="dashed",size=1)
+g<-g + theme(axis.text.x=element_text(size=12, color="#ff7e69")) 
+g<-g+ scale_x_continuous(breaks=c(3:8))
+print(g)
 ```
