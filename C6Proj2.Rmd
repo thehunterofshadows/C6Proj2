@@ -1,5 +1,5 @@
 ---
-title: "Central Limit Therorem on an Exponential Distribution"
+title: "Central Limit Theorem on an Exponential Distribution"
 author: "Justin Pizzino"
 date: "July 5, 2019"
 output: 
@@ -7,8 +7,8 @@ output:
     latex_engine: pdflatex
 
 ---
-# Summary:
-### Below I will prove the cental limit therorem and show how sampling a population can create a normal distribution for data that may not be normal. 
+# 1 Overview:
+Below I will prove the central limit theorem and show how sampling a population can create a normal distribution for data that may not be normal. 
 
 ```{r, include=FALSE}
 options(tinytex.verbose = TRUE)
@@ -25,31 +25,67 @@ knitr::opts_chunk$set(echo = TRUE)
   library(ggplot2)
 ```
 
-# Create the simulation & plot the results
+# 2 Create the simulation & plot the results
+I used a for loop to run teh rexp function to calulcate 40 sample size simulation.  I ran this 1000 times and added the means to a data table.
 ```{r simulation }
+  set.seed(8534)
   rate<-0.2
   n<-40
   intervals<-1000
-  data = NULL
-  for (i in 1 : intervals) data = c(data, mean(rexp(n,rate)))
+  sim<-NULL
+  for (i in 1 : intervals) sim = c(sim, mean(rexp(n,rate)))
+  
+  
+  sim<-data.table(sim)
+  theoMean<-(1/rate)
+  theoVar<-theoMean^2/n
+  sampMean<-mean(sim$sim)
 ```
-### The sample mean is: `r mean(data)` (also shown in blue below), which is very close to the therdoical mean of 1/lamda or 1/.2 = 5.
 
-```{r plot, echo=FALSE}
 
-data<-data.table(data)
-g<-ggplot(data, aes(x=data)) 
+```{r plotCount, echo=FALSE}
+g<-ggplot(sim, aes(x=sim)) 
 g<-g + geom_histogram(color="black",fill="white", bins=30)
-g<-g + geom_vline(aes(xintercept=mean(data)),
+g<-g + geom_vline(aes(xintercept=mean(sim)),
                   color="blue",linetype="dashed",size=1)
 g<-g + theme(axis.text.x=element_text(size=12, color="#0000ff")) 
 g<-g+ scale_x_continuous(breaks=c(3:8))
-g<-g+labs(title="Sample Distribution with Mean", x="Value",y="Count")
+g<-g+labs(title="Sample Distribution with Mean", x="Mean",y="Count")
 print(g)
 ```
 
-### Now to compare sample variance to the theoretical variance
+# 3 Now to compare sample variance & mean to the theoretical variance & mean, as well as review confidance levels
 
-##### Popultion or theoretical variance is mean^2/n so in this case 0.04/40: `r (1/(.2)^2)/40`
+**Confidence interval:** `r t.test(sim$sim)[4]`
 
-##### The sample vairance using r function var() is: `r var(data)`
+**The sample mean is:** `r mean(sim$sim)` (also shown in blue below), which is very close to the theoretical mean of 1/lamda or 1/.2 = 5.
+
+**Theoretical variance** is mean^2/n so in this case 0.04/40: `r (1/(.2)^2)/40`
+
+**The sample variance** using r function var() is: `r var(sim)`
+These values are very close, and the graph below shows how close the two distributions are (red and green curves)
+
+# 4 Distributions
+Let's look at the distribution to show it is normal.  Seen below the green curve appears symmetric bell shaped, with ~68% of the values with in 1 standard deviation.
+
+```{r plotMeans, echo=FALSE}
+
+g2<-ggplot(sim, aes(x=sim))
+g2<-g2 + geom_histogram(aes(y=..density..),color="black",fill="white", bins=30)
+g2<- g2 + stat_function(fun=dnorm, args = list(mean=theoMean, sd=sqrt(theoVar)), color="red")
+g2<-g2 + labs(title="Density of 40 Exponential with 1k Simulations", x="Mean",y="Density")
+g2<-g2+geom_density(color="green")
+g2<-g2 + geom_vline(aes(xintercept=mean(sim)),
+                  color="green",linetype="dashed",size=1)
+g2<-g2 + geom_vline(aes(xintercept=theoMean),
+                  color="red",linetype="dashed",size=1)
+g2<-g2+theme(legend.position="right")
+print(g2)
+```
+
+The red shows sample mean and distribution, green shows theoretical.  As Central Limit Theorem states that sample means of simple random elements from a large (infinite) population will take on a bell shape.  It is acceptable to have 30 or more in a sample and we have 40 samples by 1000 simulations.  As you can see here our distribution is bell shaped and is close to the theoretical.
+
+# 5 Does the distribution means of 40 exponential behave as predicted by he Central Limit Theorem?
+**CLT states** - the distribution of averages of iid variables (properly normalized) becomes that of a standard normal as the sample size increases.
+
+**Yes**, based on the simulation run, the comparison of theoretical to sample, and charts displayed, the samples do behave as predicted by CLT.  The sample means as charted appear normal.  **Also the sample and theoretical means and variances are close to each other as predicted. **
