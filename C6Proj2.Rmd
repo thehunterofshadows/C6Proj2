@@ -1,5 +1,5 @@
 ---
-title: "Statistical Inference Course Project"
+title: "Central Limit Therorem on an Exponential Distribution"
 author: "Justin Pizzino"
 date: "July 5, 2019"
 output: 
@@ -7,7 +7,8 @@ output:
     latex_engine: pdflatex
 
 ---
-
+# Summary:
+### Below I will prove the cental limit therorem and show how sampling a population can create a normal distribution for data that may not be normal. 
 
 ```{r, include=FALSE}
 options(tinytex.verbose = TRUE)
@@ -24,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
   library(ggplot2)
 ```
 
-#### Create the simultion & plot the results
+# Create the simulation & plot the results
 ```{r simulation }
   rate<-0.2
   n<-40
@@ -32,14 +33,23 @@ knitr::opts_chunk$set(echo = TRUE)
   data = NULL
   for (i in 1 : intervals) data = c(data, mean(rexp(n,rate)))
 ```
-## Sample mean is show here in read, which is very close to the therdoical mean of 1/lamda or 1/.2 = 5.
+### The sample mean is: `r mean(data)` (also shown in blue below), which is very close to the therdoical mean of 1/lamda or 1/.2 = 5.
+
 ```{r plot, echo=FALSE}
+
 data<-data.table(data)
 g<-ggplot(data, aes(x=data)) 
 g<-g + geom_histogram(color="black",fill="white", bins=30)
 g<-g + geom_vline(aes(xintercept=mean(data)),
-                  color="red",linetype="dashed",size=1)
-g<-g + theme(axis.text.x=element_text(size=12, color="#ff7e69")) 
+                  color="blue",linetype="dashed",size=1)
+g<-g + theme(axis.text.x=element_text(size=12, color="#0000ff")) 
 g<-g+ scale_x_continuous(breaks=c(3:8))
+g<-g+labs(title="Sample Distribution with Mean", x="Value",y="Count")
 print(g)
 ```
+
+### Now to compare sample variance to the theoretical variance
+
+##### Popultion or theoretical variance is mean^2/n so in this case 0.04/40: `r (1/(.2)^2)/40`
+
+##### The sample vairance using r function var() is: `r var(data)`
