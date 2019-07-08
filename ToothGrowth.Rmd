@@ -59,16 +59,22 @@ Using a 95% confidence level let's run some tests on the data.
 
 Below we see that the mean of OJ is higher but the p-value is 0.06 which is higher than 0.05 resulting in not enough evidence to reject the null hypothesis. 
 ```{r echo=TRUE}
-t.test(subset(ToothGrowth,supp=="VC")[,"len"],subset(ToothGrowth,supp=="OJ")[,"len"], paried=FALSE, var.equal=FALSE)
+t.test(subset(ToothGrowth,supp=="VC")[,"len"],
+       subset(ToothGrowth,supp=="OJ")[,"len"], 
+       paried=FALSE, var.equal=FALSE)
 ```
 
 Now let's compare the different doses, starting with 0.5 to 1.0.  Here you can see the mean is higher for 1.0 dose, and p-value is much lower, and the confidence interval doesn't include 0.  Thus we can reject the null hypothesis
 ```{r echo=TRUE}
-t.test(subset(ToothGrowth,dose==0.5)[,"len"],subset(ToothGrowth,dose==1.0)[,"len"], paried=FALSE, var.equal=FALSE)
+t.test(subset(ToothGrowth,dose==0.5)[,"len"],
+       subset(ToothGrowth,dose==1.0)[,"len"], 
+       paried=FALSE, var.equal=FALSE)
 ```
 Compare 1.0 to 2.0
 ```{r echo=TRUE}
-t.test(subset(ToothGrowth,dose==1.0)[,"len"],subset(ToothGrowth,dose==2.0)[,"len"], paried=FALSE, var.equal=FALSE)
+t.test(subset(ToothGrowth,dose==1.0)[,"len"],
+       subset(ToothGrowth,dose==2.0)[,"len"], 
+       paried=FALSE, var.equal=FALSE)
 ```
 Here we can see the mean for 2.0 is higher then 1.0, but the change is less so then from 0.5 to 1.0.  Also the p value is lower, but still, we cannot reject the null hypothesis as the confidence interval does not contain 0, and we have a very low p-value.
 

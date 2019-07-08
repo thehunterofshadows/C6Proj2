@@ -110,8 +110,10 @@ Plot 2 code
 ```{r plotMeans2, echo=TRUE, eval = FALSE}
 g2<-ggplot(sim, aes(x=sim))
 g2<-g2 + geom_histogram(aes(y=..density..),color="black",fill="white", bins=30)
-g2<- g2 + stat_function(fun=dnorm, args = list(mean=theoMean, sd=sqrt(theoVar)), color="red")
-g2<-g2 + labs(title="Density of 40 Exponential with 1k Simulations", x="Mean",y="Density")
+g2<- g2 + stat_function(fun=dnorm, args = list(mean=theoMean, sd=sqrt(theoVar)), 
+                        color="red")
+g2<-g2 + labs(title="Density of 40 Exponential with 1k Simulations", x="Mean",
+              y="Density")
 g2<-g2+geom_density(color="green")
 g2<-g2 + geom_vline(aes(xintercept=mean(sim)),
                   color="green",linetype="dashed",size=1)
