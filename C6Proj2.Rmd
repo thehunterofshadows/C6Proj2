@@ -10,9 +10,7 @@ output:
 # 1 Overview:
 Below I will prove the central limit theorem and show how sampling a population can create a normal distribution for data that may not be normal. 
 
-```{r, include=FALSE}
-options(tinytex.verbose = TRUE)
-```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -42,8 +40,8 @@ I used a for loop to run teh rexp function to calulcate 40 sample size simulatio
   sampMean<-mean(sim$sim)
 ```
 
-
-```{r plotCount, echo=FALSE}
+**Plot Code**
+```{r plotCount, echo=TRUE}
 g<-ggplot(sim, aes(x=sim)) 
 g<-g + geom_histogram(color="black",fill="white", bins=30)
 g<-g + geom_vline(aes(xintercept=mean(sim)),
@@ -68,8 +66,8 @@ These values are very close, and the graph below shows how close the two distrib
 # 4 Distributions
 Let's look at the distribution to show it is normal.  Seen below the green curve appears symmetric bell shaped, with ~68% of the values with in 1 standard deviation.
 
-```{r plotMeans, echo=FALSE}
-
+**Plot Code**
+```{r plotMeans, echo=TRUE}
 g2<-ggplot(sim, aes(x=sim))
 g2<-g2 + geom_histogram(aes(y=..density..),color="black",fill="white", bins=30)
 g2<- g2 + stat_function(fun=dnorm, args = list(mean=theoMean, sd=sqrt(theoVar)), color="red")
