@@ -58,7 +58,8 @@ g
 
 **Confidence interval:** `r t.test(sim$sim)[4]`
 
-**The sample mean is:** `r mean(sim$sim)` (also shown in blue below), which is very close to the theoretical mean of 1/lamda or 1/.2 = 5.
+**The sample mean is:** `r mean(sim$sim)` (also shown in blue below), which is very close to the 
+**theoretical mean** of 1/lamda or 1/.2 = 5.
 
 **Theoretical variance** is mean^2/n so in this case 0.04/40: `r (1/(.2)^2)/40`
 
