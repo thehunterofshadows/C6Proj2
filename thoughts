@@ -1,9 +1,24 @@
+Part 2
+1) how to create gg mulitplot of each supp type and each dose type
+2) Corrlate OJ and VC to dose
+
+
+
+
+Examples
+Facet plot
+ggplot(ToothGrowth, aes(len))+facet_grid(supp ~.)+geom_histogram(color="red", fill="pink")
+
+
+
+Done - part 1
+To Do Before Done
+1) Make sure all the code is listed in the document.
+
+
 Add verbaiage that this proves CLT as the larger your sample size the the closer each average will be to the mean, and thus the variance will be lower.  As you increase your expotnetlas teh closer the distribrution will miorror the populationas you are getting more samples from the whole population.
 
 
-
-
-Done
 Is thericoal mean the estimated mean of the population thus it's the standard error?
 Since the rate of lamda is 0.2 that should be your therodical mean.  On average 1 occurance per 5 times.
 

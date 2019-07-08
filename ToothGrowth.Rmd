@@ -1,5 +1,5 @@
 ---
-title: "ToothGrowth Analysis"
+title: "Tooth Growth Analysis"
 author: "Justin Pizzino"
 date: "7/7/2019"
 output: 
@@ -22,28 +22,28 @@ knitr::opts_chunk$set(echo = TRUE)
   options(scipen=999)
 ```
 # 1. Summary
-Using the r ToothGrowth data I will make a judgetment as to which delivery method and dose resulted in the most growth.
+Using the r Tooth Growth data I will make a judgement as to which delivery method and dose resulted in the most growth.  This was done through plotting the results, and reviewing the t.test for the different methods and dosages.
 
 # 2. Load the data and provide a summary
 ```{r load, echo=TRUE}
-data("ToothGrowth")
+data(ToothGrowth)
 summary(ToothGrowth)
 ```
 ## Let's review the two delivery methods, VC and OJ
 Mean of Tooth Growth by VC: `r mean(subset(ToothGrowth,supp=="VC")[,"len"])` and by OJ `r mean(subset(ToothGrowth,supp=="OJ")[,"len"])`
 
-By plotting the data we can see that tooth growth increases consistnly using VC, but tapers off a bit after 1.0 dose with OJ.
+By plotting the data we can see that tooth growth increases consistently using VC, but tapers off a bit after 1.0 dose with OJ.
 
 ```{r plot, echo=FALSE, fig.width=11, fig.height=5}
 g<-ggplot(ToothGrowth, aes(dose, len))
 g<-g+facet_grid(.~ supp)+geom_point(color="red")
 g<-g+stat_summary(fun.y=mean, geom="line")
-g<-g+labs(title="Comparsion of Tooth Growth by Delivery Method", x="Dose", y="Lenght")
+g<-g+labs(title="Comparison of Tooth Growth by Delivery Method", x="Dose", y="Length")
 g<-g+theme(axis.text = element_text(size=16), axis.title = element_text(size=16))
 g
 ```
 
-## Let's review the differnt dose types, 0.5, 1.0, 1.5, and 2.0
+## Let's review the different dose types, 0.5, 1.0, 1.5, and 2.0
 ```{r dose, echo=FALSE, fig.width=11, fig.height=5}
 tgSum<-summarise(group_by(ToothGrowth,dose), Avg_Len=mean(len))
 g2<-ggplot(tgSum, aes(x=dose, y=Avg_Len))+geom_line()
@@ -52,17 +52,17 @@ g2<-g2+theme(axis.text = element_text(size=16), axis.title = element_text(size=1
 g2
 
 ```
-We can see here that a higher dosege seem to improve length, but starts to taper off at 1.0.
+We can see here that a higher dosage seem to improve length, but starts to taper off at 1.0.
 
-# Use confidence intervals and/or hypothesis test to compare tooth growth by supp and dose
+# 3. Use confidence intervals and/or hypothesis test to compare tooth growth by supp and dose
 Using a 95% confidence level let's run some tests on the data.
 
-Below we see that the mean of OJ is higher but the p-value is 0.06 which is higher than 0.05 resulting in not enough evidance to reject the null hypoythsis. 
+Below we see that the mean of OJ is higher but the p-value is 0.06 which is higher than 0.05 resulting in not enough evidence to reject the null hypothesis. 
 ```{r echo=TRUE}
 t.test(subset(ToothGrowth,supp=="VC")[,"len"],subset(ToothGrowth,supp=="OJ")[,"len"], paried=FALSE, var.equal=FALSE)
 ```
 
-Now let's compare the different doses, starting with 0.5 to 1.0.  Here you can see the mean is higher for 1.0 dose, and p-value is mucher lower, and the confidence interval doesn't include 0.  Thus we can reject the null hypothesis
+Now let's compare the different doses, starting with 0.5 to 1.0.  Here you can see the mean is higher for 1.0 dose, and p-value is much lower, and the confidence interval doesn't include 0.  Thus we can reject the null hypothesis
 ```{r echo=TRUE}
 t.test(subset(ToothGrowth,dose==0.5)[,"len"],subset(ToothGrowth,dose==1.0)[,"len"], paried=FALSE, var.equal=FALSE)
 ```
@@ -70,15 +70,23 @@ Compare 1.0 to 2.0
 ```{r echo=TRUE}
 t.test(subset(ToothGrowth,dose==1.0)[,"len"],subset(ToothGrowth,dose==2.0)[,"len"], paried=FALSE, var.equal=FALSE)
 ```
-Here we can see the mean for 2.0 is higher then 1.0, but the change is less so then from 0.5 to 1.0.  Also teh p value is lower, but still, we cannot reject the null hypothsis as the confidence interval does not contain 0, and we have a very low p-value.
+Here we can see the mean for 2.0 is higher then 1.0, but the change is less so then from 0.5 to 1.0.  Also the p value is lower, but still, we cannot reject the null hypothesis as the confidence interval does not contain 0, and we have a very low p-value.
 
-# Appendix
+# 4. State your conclusions and the assumptions needed for your conclusions
+**Do delivery method and/or dosage affect tooth growth in guinea pigs?**
+Using the data provided and assuming there are no other factors in the different methods of supplement deliver and dosage I conclude that:
+
+1) OJ delivery method may provide better results at 0.5 and 1.0 dosage, but there is not enough data to support that holistically, further more at a dosage of 2.0 the difference is no longer there.
+
+2) Tooth growth increases at a dosage of 1.0 over 0.5.  Tooth growth continues to increase at a dosage of 2.0, but tappers off.
+
+# 5. Appendix
 Code for plot 1
 ```{r plot_code, echo=TRUE, eval=FALSE}
 g<-ggplot(ToothGrowth, aes(dose, len))
 g<-g+facet_grid(.~ supp)+geom_point(color="pink")
 g<-g+stat_summary(fun.y=mean, geom="line")
-g<-g+labs(title="Comparsion of Tooth Growth by Delivery Method", x="Dose", y="Lenght")
+g<-g+labs(title="Comparison of Tooth Growth by Delivery Method", x="Dose", y="Length")
 g
 ```
 Code for plot 2
