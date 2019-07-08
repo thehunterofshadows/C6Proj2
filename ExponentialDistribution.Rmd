@@ -66,7 +66,7 @@ g
 These values are very close, and the graph below shows how close the two distributions are (red and green curves)
 
 # 4. Distributions
-Let's look at the distribution to show it is normal.  Seen below the green curve appears symmetric bell shaped, with ~68% of the values with in 1 standard deviation.
+Let's look at the distribution to show it is normal.  As can be seen below the green curve appears symmetric bell shaped, with ~68% of the values with in 1 standard deviation.
 
 
 ```{r plotMeans, echo=FALSE, fig.width=11, fig.height=5}
